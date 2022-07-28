@@ -79,9 +79,9 @@ services:
 ---
 ## Custom engine
 
-To support new types of backups new engine can be defined in app/engines/*.sh script.
-Engine script should contain following header
+To support new types of backups, new engine script can be defined in app/engines/*.sh script.
 
+Engine script should contain following header:
 ```
 #!/bin/bash
 
