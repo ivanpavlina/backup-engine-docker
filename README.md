@@ -29,6 +29,7 @@ Following environment variables are configurable independent of engine.
 | EXPORT_CONFIG          | Boolean | False    |               | If set to true in addition to binary config, configuration export will be performed      |
 | FILE_GENERATE_MAX_WAIT | Integer | False    | 30            | Max time engine will wait for router to generate backup file. Must be a positive integer |
 
+---
 #### Tasmota engine specific configuration
 
 | Variable | Type   | Required | Default value | Description                      |
@@ -37,6 +38,7 @@ Following environment variables are configurable independent of engine.
 | USERNAME | String | True     |               | HTTP username                    |
 | PASSWORD | String | True     |               | HTTP password                    |
 
+---
 #### Rsync engine specific configuration
 
 | Variable      | Type   | Required | Default value | Description                                     |
@@ -47,10 +49,9 @@ Following environment variables are configurable independent of engine.
 | REMOTE_PATH   | String | True     |               | Path on remote address                          |
 | RSYNC_EXCLUDE | String | True     |               | List of rsync exclude patterns separated by ,   |
 
-## Docker-Compose example
+## docker-compose example
 ```
 services:
-
   mikrotik:
     image: exithub/backup-engine:latest
     restart: unless-stopped      
@@ -103,6 +104,8 @@ if [[ "${BASH_SOURCE[0]}" != "${0}" ]] ; then
   << Setup portion of engine, check env variables, ... Returns error code which will be checked in entrypoint >>
   return $err;
 fi;
+
+######################################################################
 
 log $identifier "Running..."
 

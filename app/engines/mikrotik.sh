@@ -26,6 +26,8 @@ if [[ "${BASH_SOURCE[0]}" != "${0}" ]] ; then
   return $err;
 fi;
 
+######################################################################
+
 log $identifier "Running..."
 
 current_date=$(date +%Y_%m_%d)

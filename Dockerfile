@@ -1,4 +1,3 @@
-#FROM python:3.10.5-alpine
 FROM alpine:latest
 
 WORKDIR /home/app
