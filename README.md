@@ -37,6 +37,15 @@ Following environment variables are configurable independent of engine.
 | USERNAME | String | True     |               | HTTP username                    |
 | PASSWORD | String | True     |               | HTTP password                    |
 
+#### Rsync engine specific configuration
+
+| Variable      | Type   | Required | Default value | Description                                     |
+|---------------|--------|----------|---------------|-------------------------------------------------|
+| HOST          | String | True     |               | IP addresses                                    |
+| SSH_USERNAME  | String | True     |               | SSH username                                    |
+| SSH_KEY       | String | False    | /keys/id_rsa  | Path to id_rsa key for authorization to targets |
+| REMOTE_PATH   | String | True     |               | Path on remote address                          |
+| RSYNC_EXCLUDE | String | True     |               | List of rsync exclude patterns separated by ,   |
 
 ## Docker-Compose example
 ```

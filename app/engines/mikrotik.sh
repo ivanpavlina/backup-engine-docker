@@ -14,6 +14,10 @@ if [[ "${BASH_SOURCE[0]}" != "${0}" ]] ; then
     export SSH_KEY=/keys/id_rsa;
   fi;
 
+  if ! file_exists SSH_KEY; then
+    log $identifier "No key found on $SSH_KEY";
+  fi;
+
   if ! env_var_is_set FILE_GENERATE_MAX_WAIT || ! env_var_is_positive FILE_GENERATE_MAX_WAIT; then
     log $identifier "FILE_GENERATE_MAX_WAIT env variable is not set or invalid, defaulting to 30";
     export FILE_GENERATE_MAX_WAIT=30;
