@@ -36,7 +36,7 @@ target_backup_dir="$BACKUP_PATH/$current_date"
 mkdir -p "$target_backup_dir";
 
 if /usr/bin/rsync \
-    -zr --partial --exclude-from=/rsync-exclude \
+    -zaL --partial --exclude-from=/rsync-exclude \
     -e "ssh -o StrictHostKeyChecking=no -i $SSH_KEY" \
     "$SSH_USERNAME@$HOST:$REMOTE_PATH/" "$target_backup_dir/"; then
   log $identifier "Transferred successfully"
