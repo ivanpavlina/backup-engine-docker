@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# If setup already complete just run crond.
+file_setup_complete=/setup_complete
+if test -f "$file_setup_complete"; then
+  crond -l 2 -f > /dev/stdout 2> /dev/stderr
+  exit 0;
+fi
+
 name="entrypoint"
 source /home/app/utils.sh
 
@@ -53,3 +60,4 @@ log $name "Starting cron daemon..."
 
 
 crond -l 2 -f > /dev/stdout 2> /dev/stderr
+
