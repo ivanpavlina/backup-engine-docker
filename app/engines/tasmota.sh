@@ -19,6 +19,8 @@ log $identifier "Running..."
 
 current_date=$(date +%Y_%m_%d)
 
+failed=false;
+
 oldIFS=$IFS
 export IFS="|"
 for target in $TARGETS; do
@@ -29,6 +31,12 @@ for target in $TARGETS; do
       log $identifier "Successfully download configuration for $target";
   else
       log $identifier "Failed to download configuration for $target";
+      failed=true;
   fi
 done
 IFS=$oldIFS
+
+if [ $failed = true ]; then
+  log $identifier "Killing container due to errors";
+  kill_container;
+fi

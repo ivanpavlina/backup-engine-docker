@@ -43,4 +43,6 @@ if /usr/bin/rsync \
 else
   log $identifier "Some errors occurred while transferring from $SSH_USERNAME@$HOST:$REMOTE_PATH to $target_backup_dir
                    key:[$SSH_KEY] exclude:[$(cat /rsync-exclude)]"
+  log $identifier "Killing container due to errors";
+  kill_container;
 fi

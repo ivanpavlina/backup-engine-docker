@@ -25,3 +25,13 @@ function function_exists() {
   declare -F "$1" > /dev/null;
   return $?
 }
+
+function run() {
+  if ! pidof crond; then
+    crond -l 2 -f > /dev/stdout 2> /dev/stderr;
+  fi
+}
+
+function kill_container() {
+  /usr/bin/killall crond
+}

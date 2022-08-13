@@ -44,6 +44,7 @@ if [ "$EXPORT_CONFIG" = true ]; then
   scp_files=("${scp_files[@]}" "backup.rsc")
 fi
 
+failed=false;
 oldIFS=$IFS
 export IFS="|"
 for target in $TARGETS; do
@@ -52,6 +53,7 @@ for target in $TARGETS; do
 
   if ! ssh -o StrictHostKeyChecking=no -i "$SSH_KEY" "$SSH_USERNAME@$target" "$backup_command" > /dev/null; then
     log $identifier "$target" "Failed executing backup command";
+    failed=true;
     continue
   fi
   sleep 3
@@ -95,6 +97,7 @@ for target in $TARGETS; do
 
   if [ ${#success_files[@]} -eq 0 ]; then
     log $identifier "$target" "Failed retrieving files!";
+    failed=true;
   else
     export IFS=" "
     log $identifier "$target" "Successfully retrieved files [ ${success_files[*]} ]";
@@ -102,4 +105,8 @@ for target in $TARGETS; do
   fi
 done
 export IFS=$oldIFS
-#IFS=
+
+if [ $failed = true ]; then
+  log $identifier "Killing container due to errors";
+  kill_container;
+fi
