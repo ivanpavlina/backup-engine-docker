@@ -28,7 +28,7 @@ function function_exists() {
 
 function run() {
   if ! pidof crond; then
-    crond -l 2 -f > /dev/stdout 2> /dev/stderr;
+    /usr/sbin/crond -l 2 -f > /dev/stdout 2> /dev/stderr;
   fi
 }
 
