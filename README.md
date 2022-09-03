@@ -13,7 +13,7 @@ Following environment variables are configurable independent of engine.
 | Variable                 | Type    | Required | Default value | Description                                                                                                                              |
 |--------------------------|---------|----------|---------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | CRON                     | String  | True     |               | Crontab expression with 5 fields.                                                                                                        |
-| BACKUP_PATH              | String  | False    | /backup       | Output directory for backups. Should be mounted as volume.                                                                               |
+| BACKUP_PATH              | String  | True     |               | Output directory for backups. Should be mounted as volume.                                                                               |
 | ENGINE                   | String  | True     |               | Backup engine name which will be run, see below for details. <br/>Must be a name of a script contained in app/engines without extension. |
 | BACKUP_CLEANUP_KEEP_DAYS | Integer | False    |               | If set cleanup of directories older than n days will be run after backup job.                                                            |
 
@@ -24,7 +24,7 @@ Following environment variables are configurable independent of engine.
 |------------------------|---------|----------|---------------|------------------------------------------------------------------------------------------|
 | TARGETS                | String  | True     |               | IP addresses separated by &#124;                                                         |
 | SSH_USERNAME           | String  | True     |               | SSH username                                                                             |
-| SSH_KEY                | String  | False    | /keys/id_rsa  | Path to id_rsa key for authorization to targets                                          |
+| SSH_KEY                | String  | True     |               | Path to id_rsa key for authorization to targets                                          |
 | BACKUP_PASSWORD        | String  | False    |               | If set backup file will be encrypted                                                     |
 | EXPORT_CONFIG          | Boolean | False    |               | If set to true in addition to binary config, configuration export will be performed      |
 | FILE_GENERATE_MAX_WAIT | Integer | False    | 30            | Max time engine will wait for router to generate backup file. Must be a positive integer |
@@ -45,9 +45,18 @@ Following environment variables are configurable independent of engine.
 |---------------|--------|----------|---------------|-------------------------------------------------|
 | HOST          | String | True     |               | IP addresses                                    |
 | SSH_USERNAME  | String | True     |               | SSH username                                    |
-| SSH_KEY       | String | False    | /keys/id_rsa  | Path to id_rsa key for authorization to targets |
+| SSH_KEY       | String | True     |               | Path to id_rsa key for authorization to targets |
 | REMOTE_PATH   | String | True     |               | Path on remote address                          |
 | RSYNC_EXCLUDE | String | True     |               | List of rsync exclude patterns separated by ,   |
+
+
+---
+#### Local engine specific configuration
+
+| Variable      | Type   | Required | Default value | Description                                   |
+|---------------|--------|----------|---------------|-----------------------------------------------|
+| SOURCE_PATH   | String | True     |               | Source path to backup                         |
+| RSYNC_EXCLUDE | String | True     |               | List of rsync exclude patterns separated by , |
 
 ## docker-compose example
 ```
@@ -83,6 +92,20 @@ services:
       - PASSWORD=admin
     volumes:
       - /share/Backup/tasmota:/backup
+      
+  local:
+    image: exithub/backup-engine:latest
+    restart: unless-stopped      
+    environment:
+      - CRON=15 1 * * *
+      - BACKUP_PATH=/backup
+      - BACKUP_CLEANUP_KEEP_DAYS=2
+      
+      - ENGINE=local
+      - SOURCE_PATH=/source
+    volumes:
+      - /share/source:/source
+      - /share/Backup/localbkp:/backup
 ```
 
 
@@ -112,7 +135,3 @@ log $identifier "Running..."
 << Backup portion of engine, this part is run through cron >>
 
 ```
-
-
-
-

@@ -4,6 +4,7 @@ identifier="cleanup"
 source /home/app/utils.sh
 
 log $identifier "Running..."
+log $identifier "Backup path $BACKUP_PATH"
 
 items_count=$(find $BACKUP_PATH/* -maxdepth 0 | wc -l)
 delete_count=$(find $BACKUP_PATH/* -maxdepth 0 -mtime "+$BACKUP_CLEANUP_KEEP_DAYS" | wc -l);

@@ -13,8 +13,7 @@ errored=false;
 if ! env_var_is_set CRON; then log $name "CRON env variable is not set"; errored=true; fi;
 
 if ! env_var_is_set BACKUP_PATH; then
-  log $name "BACKUP_PATH env variable is not set, defaulting to /backup";
-  export BACKUP_PATH=/backup;
+  log $name "BACKUP_PATH env variable is not set"; errored=1;
 fi;
 
 if ! env_var_is_set ENGINE ; then
