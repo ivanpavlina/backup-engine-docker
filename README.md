@@ -27,7 +27,7 @@ Following environment variables are configurable independent of engine.
 | SSH_KEY                | String  | True     |               | Path to id_rsa key for authorization to targets                                          |
 | BACKUP_PASSWORD        | String  | False    |               | If set backup file will be encrypted                                                     |
 | EXPORT_CONFIG          | Boolean | False    |               | If set to true in addition to binary config, configuration export will be performed      |
-| FILE_GENERATE_MAX_WAIT | Integer | False    | 30            | Max time engine will wait for router to generate backup file. Must be a positive integer |
+| FILE_GENERATE_MAX_WAIT | Integer | True     |               | Max time engine will wait for router to generate backup file. Must be a positive integer |
 
 ---
 #### Tasmota engine specific configuration
