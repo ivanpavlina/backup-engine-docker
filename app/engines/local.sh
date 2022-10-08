@@ -16,6 +16,10 @@ if [[ "${BASH_SOURCE[0]}" != "${0}" ]] ; then
     log $identifier "Rsync exclude patterns initialized [$RSYNC_EXCLUDE]";
   fi;
 
+  if env_var_is_set RSYNC_FLAGS; then
+    log $identifier "Local rsync will be run with requested flags [$RSYNC_FLAGS]";
+  fi
+
   return $err;
 fi;
 
@@ -28,7 +32,7 @@ target_backup_dir="$BACKUP_PATH/$current_date"
 mkdir -p "$target_backup_dir";
 
 if /usr/bin/rsync \
-    -zaL --partial --exclude-from=/rsync-exclude \
+    $RSYNC_FLAGS --exclude-from=/rsync-exclude \
     "$SOURCE_PATH/" "$target_backup_dir/"; then
   log $identifier "Transferred successfully"
 else

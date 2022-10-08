@@ -48,7 +48,7 @@ Following environment variables are configurable independent of engine.
 | SSH_KEY       | String | True     |               | Path to id_rsa key for authorization to targets |
 | REMOTE_PATH   | String | True     |               | Path on remote address                          |
 | RSYNC_EXCLUDE | String | True     |               | List of rsync exclude patterns separated by ,   |
-
+| RSYNC_FLAGS   | String | True     |               | List of rsync flags                             |
 
 ---
 #### Local engine specific configuration
@@ -57,6 +57,7 @@ Following environment variables are configurable independent of engine.
 |---------------|--------|----------|---------------|-----------------------------------------------|
 | SOURCE_PATH   | String | True     |               | Source path to backup                         |
 | RSYNC_EXCLUDE | String | True     |               | List of rsync exclude patterns separated by , |
+| RSYNC_FLAGS   | String | True     |               | List of rsync flags                           |
 
 ## docker-compose example
 ```
@@ -102,6 +103,7 @@ services:
       - BACKUP_CLEANUP_KEEP_DAYS=2
       
       - ENGINE=local
+      - RSYNC_FLAGS=-a --partial
       - SOURCE_PATH=/source
     volumes:
       - /share/source:/source
