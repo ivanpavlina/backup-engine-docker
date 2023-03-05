@@ -42,20 +42,19 @@ fi
 
 crontab="""$CRON : && : &&"""
 
-if [ "$ENGINE" != "CLEANUP_ONLY" ]; then
-  crontab="$crontab /home/app/engines/$ENGINE.sh"""
-fi
-
 # Setup cleaner
 if env_var_is_set BACKUP_CLEANUP_KEEP_DAYS && env_var_is_positive BACKUP_CLEANUP_KEEP_DAYS; then
-  if [ "$ENGINE" != "CLEANUP_ONLY" ]; then crontab="$crontab &&"; fi
-  crontab="$crontab /home/app/cleanup.sh"
+  crontab="$crontab /home/app/cleanup.sh;"
   log $name "Setting up cleaner. Cleaning up directories older than $BACKUP_CLEANUP_KEEP_DAYS days"
 else
   log $name "BACKUP_CLEANUP_KEEP_DAYS env variable is invalid [$BACKUP_CLEANUP_KEEP_DAYS],
                    must be a positive integer. Not setting up cleaner";
   errored=true;
 fi;
+
+if [ "$ENGINE" != "CLEANUP_ONLY" ]; then
+  crontab="$crontab /home/app/engines/$ENGINE.sh"""
+fi
 
 if [ "$errored" = true ]; then
   log $name "Environment setup failed >>\n$(env)"
