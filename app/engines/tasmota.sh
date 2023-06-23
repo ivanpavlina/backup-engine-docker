@@ -15,26 +15,40 @@ fi;
 
 ######################################################################
 
+download_configuration() {
+  if /usr/bin/wget -q --user "$USERNAME" --password "$PASSWORD" -O "$TARGET_BACKUP_DIR"/"$current_date".backup http://"$1"/dl; then
+    log $identifier "Successfully download configuration for $1";
+  else
+    log $identifier "Failed to download configuration for $1";
+    failed=true;
+  fi
+}
+
 log $identifier "Running..."
 
 current_date=$(date +%Y_%m_%d)
 
 failed=false;
 
-oldIFS=$IFS
-export IFS="|"
-for target in $TARGETS; do
-  TARGET_BACKUP_DIR="$BACKUP_PATH/$target"
-  mkdir -p "$TARGET_BACKUP_DIR";
+IFS='|' read -ra IPS <<< "$TARGETS"
+for ip_range in "${IPS[@]}"; do
+  if [[ $ip_range =~ "-" ]]; then
+    IFS='-' read -ra IP_RANGE <<< "$ip_range"
+    start_ip="${IP_RANGE[0]}"
+    end_ip="${IP_RANGE[1]}"
 
-  if /usr/bin/wget -q --user "$USERNAME" --password "$PASSWORD" -O "$TARGET_BACKUP_DIR"/"$current_date".backup http://"$target"/dl; then
-      log $identifier "Successfully download configuration for $target";
+    ip_prefix="${start_ip%.*}"
+    start_octet="${start_ip##*.}"
+    end_octet="${end_ip##*.}"
+
+    for ((octet = start_octet; octet <= end_octet; octet++)); do
+      ip_address="$ip_prefix.$octet"
+      download_configuration $ip_address
+    done
   else
-      log $identifier "Failed to download configuration for $target";
-      failed=true;
+    download_configuration $ip_range
   fi
 done
-IFS=$oldIFS
 
 if [ $failed = true ]; then
   log $identifier "Killing container due to errors";

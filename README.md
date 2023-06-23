@@ -32,11 +32,11 @@ Following environment variables are configurable independent of engine.
 ---
 #### Tasmota engine specific configuration
 
-| Variable | Type   | Required | Default value | Description                      |
-|----------|--------|----------|---------------|----------------------------------|
-| TARGETS  | String | True     |               | IP addresses separated by &#124; |
-| USERNAME | String | True     |               | HTTP username                    |
-| PASSWORD | String | True     |               | HTTP password                    |
+| Variable | Type   | Required | Default value | Description                                                                        |
+|----------|--------|----------|---------------|------------------------------------------------------------------------------------|
+| TARGETS  | String | True     |               | IP addresses separated by &#124; Also supports ranges on last octet separated by - |
+| USERNAME | String | True     |               | HTTP username                                                                      |
+| PASSWORD | String | True     |               | HTTP password                                                                      |
 
 ---
 #### Rsync engine specific configuration
@@ -88,7 +88,7 @@ services:
       - BACKUP_CLEANUP_KEEP_DAYS=2
       
       - ENGINE=tasmota
-      - TARGETS=192.168.88.10|192.168.88.11
+      - TARGETS=192.168.88.10-15|192.168.88.99
       - USERNAME=admin
       - PASSWORD=admin
     volumes:
