@@ -16,17 +16,20 @@ fi;
 ######################################################################
 
 download_configuration() {
-  if /usr/bin/wget -q --user "$USERNAME" --password "$PASSWORD" -O "$TARGET_BACKUP_DIR"/"$current_date".backup http://"$1"/dl; then
-    log $identifier "Successfully download configuration for $1";
+  output=$(/usr/bin/wget --user "$USERNAME" --password "$PASSWORD" -O "$target_backup_dir"/"$1".backup http://"$1"/dl 2>&1)
+  if [ $? -ne 0 ]; then
+      log $identifier "Failed to download configuration for $1\n$output";
+      failed=true;
   else
-    log $identifier "Failed to download configuration for $1";
-    failed=true;
+    log $identifier "Successfully download configuration for $1";
   fi
 }
 
 log $identifier "Running..."
 
 current_date=$(date +%Y_%m_%d)
+target_backup_dir="$BACKUP_PATH/$current_date"
+mkdir -p "$target_backup_dir";
 
 failed=false;
 
