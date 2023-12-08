@@ -28,6 +28,10 @@ if [[ "${BASH_SOURCE[0]}" != "${0}" ]] ; then
     log $identifier "Rsync will be run with requested flags [$RSYNC_FLAGS]";
   fi
 
+  if env_var_is_set ARCHIVE_BACKUP; then
+    log $identifier "Backup will be archived";
+  fi
+
   return $err;
 fi;
 
@@ -44,6 +48,17 @@ if /usr/bin/rsync \
     -e "ssh -o StrictHostKeyChecking=no -i $SSH_KEY" \
     "$SSH_USERNAME@$HOST:$REMOTE_PATH/" "$target_backup_dir/"; then
   log $identifier "Transferred successfully"
+
+  if [ "$ARCHIVE_BACKUP" = "true" ]; then
+    if tar -czf "$target_backup_dir.tar.gz" -C "$target_backup_dir" .; then
+      rm -rf "$target_backup_dir"
+      log $identifier "Backup archived and original backup directory removed"
+    else
+      log $identifier "Error in archiving process"
+      kill_container;
+    fi
+  fi
+
 else
   log $identifier "Some errors occurred while transferring from $SSH_USERNAME@$HOST:$REMOTE_PATH to $target_backup_dir
                    key:[$SSH_KEY] exclude:[$(cat /rsync-exclude)]"

@@ -41,23 +41,25 @@ Following environment variables are configurable independent of engine.
 ---
 #### Rsync engine specific configuration
 
-| Variable      | Type   | Required | Default value | Description                                     |
-|---------------|--------|----------|---------------|-------------------------------------------------|
-| HOST          | String | True     |               | IP addresses                                    |
-| SSH_USERNAME  | String | True     |               | SSH username                                    |
-| SSH_KEY       | String | True     |               | Path to id_rsa key for authorization to targets |
-| REMOTE_PATH   | String | True     |               | Path on remote address                          |
-| RSYNC_EXCLUDE | String | True     |               | List of rsync exclude patterns separated by ,   |
-| RSYNC_FLAGS   | String | True     |               | List of rsync flags                             |
+| Variable       | Type    | Required | Default value | Description                                     |
+|----------------|---------|----------|---------------|-------------------------------------------------|
+| HOST           | String  | True     |               | IP addresses                                    |
+| SSH_USERNAME   | String  | True     |               | SSH username                                    |
+| SSH_KEY        | String  | True     |               | Path to id_rsa key for authorization to targets |
+| REMOTE_PATH    | String  | True     |               | Path on remote address                          |
+| RSYNC_EXCLUDE  | String  | False    |               | List of rsync exclude patterns separated by ,   |
+| RSYNC_FLAGS    | String  | False    |               | List of rsync flags                             |
+| ARCHIVE_BACKUP | Boolean | False    |               | Creates .tar.gz archive of backup folder        |
 
 ---
 #### Local engine specific configuration
 
-| Variable      | Type   | Required | Default value | Description                                   |
-|---------------|--------|----------|---------------|-----------------------------------------------|
-| SOURCE_PATH   | String | True     |               | Source path to backup                         |
-| RSYNC_EXCLUDE | String | True     |               | List of rsync exclude patterns separated by , |
-| RSYNC_FLAGS   | String | True     |               | List of rsync flags                           |
+| Variable        | Type    | Required | Default value | Description                                   |
+|-----------------|---------|----------|---------------|-----------------------------------------------|
+| SOURCE_PATH     | String  | True     |               | Source path to backup                         |
+| RSYNC_EXCLUDE   | String  | False    |               | List of rsync exclude patterns separated by , |
+| RSYNC_FLAGS     | String  | False    |               | List of rsync flags                           |
+| $ARCHIVE_BACKUP | Boolean | False    |               | Creates .tar.gz archive of backup folder      |
 
 ## docker-compose example
 ```
