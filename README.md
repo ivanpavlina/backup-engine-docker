@@ -26,7 +26,7 @@ Following environment variables are configurable independent of engine.
 | SSH_USERNAME           | String  | True     |               | SSH username                                                                             |
 | SSH_KEY                | String  | True     |               | Path to id_rsa key for authorization to targets                                          |
 | BACKUP_PASSWORD        | String  | False    |               | If set backup file will be encrypted                                                     |
-| EXPORT_CONFIG          | Boolean | False    |               | If set to true in addition to binary config, configuration export will be performed      |
+| EXPORT_CONFIG          | Boolean | False    | False         | If set to true in addition to binary config, configuration export will be performed      |
 | FILE_GENERATE_MAX_WAIT | Integer | True     |               | Max time engine will wait for router to generate backup file. Must be a positive integer |
 
 ---
@@ -49,7 +49,7 @@ Following environment variables are configurable independent of engine.
 | REMOTE_PATH    | String  | True     |               | Path on remote address                          |
 | RSYNC_EXCLUDE  | String  | False    |               | List of rsync exclude patterns separated by ,   |
 | RSYNC_FLAGS    | String  | False    |               | List of rsync flags                             |
-| ARCHIVE_BACKUP | Boolean | False    |               | Creates .tar.gz archive of backup folder        |
+| ARCHIVE_BACKUP | Boolean | False    | False         | Creates .tar.gz archive of backup folder        |
 
 ---
 #### Local engine specific configuration
@@ -59,7 +59,7 @@ Following environment variables are configurable independent of engine.
 | SOURCE_PATH     | String  | True     |               | Source path to backup                         |
 | RSYNC_EXCLUDE   | String  | False    |               | List of rsync exclude patterns separated by , |
 | RSYNC_FLAGS     | String  | False    |               | List of rsync flags                           |
-| $ARCHIVE_BACKUP | Boolean | False    |               | Creates .tar.gz archive of backup folder      |
+| ARCHIVE_BACKUP  | Boolean | False    | False         | Creates .tar.gz archive of backup folder      |
 
 ## docker-compose example
 ```
