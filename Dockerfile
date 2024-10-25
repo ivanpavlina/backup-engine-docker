@@ -12,4 +12,7 @@ RUN apk update &&  \
 
 COPY app/ ./
 
+RUN chmod +x *.sh
+RUN chmod +x /home/app/engines/*.sh
+
 ENTRYPOINT ["./entrypoint.sh"]
