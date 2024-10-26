@@ -30,6 +30,9 @@ if [[ "${BASH_SOURCE[0]}" != "${0}" ]] ; then
 
   if env_var_is_set ARCHIVE_BACKUP && [ "$ARCHIVE_BACKUP" = "true" ]; then
     log $identifier "Backup will be archived";
+    if env_var_is_set ARCHIVE_STAGING_DIRECTORY ; then
+      log $identifier "Archive will be staged to [$ARCHIVE_STAGING_DIRECTORY]";
+    fi
   fi
 
   return $err;
@@ -41,20 +44,27 @@ log $identifier "Running..."
 
 current_date=$(date +%Y_%m_%d)
 target_backup_dir="$BACKUP_PATH/$current_date"
-mkdir -p "$target_backup_dir";
 
 failed=false;
+
+if env_var_is_set ARCHIVE_BACKUP && [ "$ARCHIVE_BACKUP" = "true" ] && env_var_is_set ARCHIVE_STAGING_DIRECTORY; then
+  staging_dir="$ARCHIVE_STAGING_DIRECTORY"
+else
+  staging_dir="$target_backup_dir"
+fi
+
+mkdir -p "$staging_dir"
 
 if /usr/bin/rsync \
     $RSYNC_FLAGS --exclude-from=/rsync-exclude \
     -e "ssh -o StrictHostKeyChecking=no -i $SSH_KEY" \
-    "$SSH_USERNAME@$HOST:$REMOTE_PATH/" "$target_backup_dir/"; then
+    "$SSH_USERNAME@$HOST:$REMOTE_PATH/" "$staging_dir/"; then
   log $identifier "Transferred successfully"
 
   if env_var_is_set ARCHIVE_BACKUP && [ "$ARCHIVE_BACKUP" = "true" ]; then
     log $identifier "Archiving backup..."
-    if tar -czf "$target_backup_dir.tar.gz" -C "$target_backup_dir" .; then
-      rm -rf "$target_backup_dir"
+    if tar -czf "$target_backup_dir.tar.gz" -C "$staging_dir" .; then
+      rm -rf "$staging_dir"
       log $identifier "Backup archived"
     else
       log $identifier "Error occurred while archiving backup, original backup directory will persist"
