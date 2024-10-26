@@ -48,7 +48,7 @@ failed=false;
 oldIFS=$IFS
 export IFS="|"
 for target in $TARGETS; do
-  TARGET_BACKUP_DIR="$BACKUP_PATH/$current_date$/target"
+  TARGET_BACKUP_DIR="$BACKUP_PATH/$current_date/$target"
   mkdir -p "$TARGET_BACKUP_DIR";
 
   if ! ssh -o StrictHostKeyChecking=no -i "$SSH_KEY" "$SSH_USERNAME@$target" "$backup_command" > /dev/null; then
