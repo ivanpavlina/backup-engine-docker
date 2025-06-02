@@ -47,9 +47,7 @@ if env_var_is_set BACKUP_CLEANUP_KEEP_DAYS && env_var_is_positive BACKUP_CLEANUP
   crontab="$crontab /home/app/cleanup.sh;"
   log $name "Setting up cleaner. Cleaning up directories older than $BACKUP_CLEANUP_KEEP_DAYS days"
 else
-  log $name "BACKUP_CLEANUP_KEEP_DAYS env variable is invalid [$BACKUP_CLEANUP_KEEP_DAYS],
-                   must be a positive integer. Not setting up cleaner";
-  errored=true;
+  log $name "BACKUP_CLEANUP_KEEP_DAYS env variable is invalid [$BACKUP_CLEANUP_KEEP_DAYS], must be a positive integer. Not setting up cleaner";
 fi;
 
 if [ "$ENGINE" != "CLEANUP_ONLY" ]; then
