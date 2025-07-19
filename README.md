@@ -38,6 +38,16 @@ Following environment variables are configurable independent of engine.
 | USERNAME | String | True     |               | HTTP username                                                                      |
 | PASSWORD | String | True     |               | HTTP password                                                                      |
 
+#### SCP engine specific configuration
+
+| Variable                  | Type    | Required | Default value | Description                                                   |
+|---------------------------|---------|----------|---------------|---------------------------------------------------------------|
+| HOST                      | String  | True     |               | IP addresses                                                  |
+| SSH_USERNAME              | String  | True     |               | SSH username                                                  |
+| SSH_KEY                   | String  | True     |               | Path to id_rsa key for authorization to targets               |
+| REMOTE_PATHS              | String  | True     |               | Paths on remote address separated by &#124                    |
+| ARCHIVE_BACKUP            | Boolean | False    | False         | Creates .tar.gz archive of backup folder                      |
+| ARCHIVE_STAGING_DIRECTORY | String  | False    |               | Uses staging folder to copy files before archiving to .tar.gz |
 ---
 #### Rsync engine specific configuration
 
